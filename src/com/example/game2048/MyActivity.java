@@ -246,8 +246,27 @@ public class MyActivity extends Activity {
                 if (freeY != notFreeY) {
                     butns[i][freeY].setText(butns[i][notFreeY].getText());
                     changeColor(butns[i][freeY]);
+
+                   // ”дал€ем созданный элемент из массива свободных позиций
+                    Element element2=new Element();
+                    for (int k=0; k<freePosition.size(); k++) {
+                        element2=freePosition.get(k);
+                        if ((element2.getX()==i) && (element2.getY()==freeY)) {
+                            freePosition.remove(element2);
+                            break;
+                        }
+                    }
+
                     butns[i][notFreeY].setText("");
                     changeColor(butns[i][notFreeY]);
+
+                    // ƒобавл€ем  в массив свободных позиций ранее зан€тое место
+                    Element element=new Element();
+                    element.setX(i);
+                    element.setY(notFreeY);
+                    freePosition.add(element);
+
+
                 }
 
             }
