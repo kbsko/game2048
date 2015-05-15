@@ -63,8 +63,11 @@ public class MyActivity extends Activity {
 
 
         // Пример добавления элементов
-       // newElement();
-        newElement(2);
+        newElement();
+        newElement(16);
+        newElement(64);
+        newElement(128);
+        newElement();
 
 
 
@@ -136,16 +139,12 @@ public class MyActivity extends Activity {
             rightbtn.setEnabled(false);
             upbtn.setEnabled(false);
             downbtn.setEnabled(false);
-
         }
-
-
     }
 
 
     // Перегрузка функции с новым элементом заданым вручную
     public void newElement(int value) {
-
         Random rand = new Random();
         // Если есть свободное место
         if (!freePosition.isEmpty()) {
@@ -153,20 +152,15 @@ public class MyActivity extends Activity {
             int randposition = rand.nextInt(freePosition.size());
             Element temp = new Element();
             temp = freePosition.get(randposition);
-
-         //   int randX = temp.getX();
-            int randX=0;
-            int randY =3;   // temp.getY();
+            int randX = temp.getX();
+            int randY =temp.getY();
             freePosition.remove(randposition);
 
             //  Определяем цвет нового элемента фиксируем значение
             String valueStrng = Integer.toString(value);
             butns[randX][randY].setText(valueStrng);
             changeColor(butns[randX][randY]);
-
-
         }
-
         // Если нет места заканчиваем игру.
         if (freePosition.isEmpty()) {
             butns[1][0].setText("G");
@@ -195,7 +189,6 @@ public class MyActivity extends Activity {
             Button upbtn = (Button) findViewById(R.id.upbtn);
             Button downbtn = (Button) findViewById(R.id.downbtn);
 
-
             // Фиксируем кликабельность кнопок
             reset.setEnabled(true);
             reset.setText("RES");
@@ -204,12 +197,8 @@ public class MyActivity extends Activity {
             rightbtn.setEnabled(false);
             upbtn.setEnabled(false);
             downbtn.setEnabled(false);
-
         }
-
-
     }
-
 
     public void uppush(View view) {
         newElement();
@@ -221,57 +210,49 @@ public class MyActivity extends Activity {
     }
 
     public void leftpush(View view) {
-            int freeX=10;
-            int freeY=10;
-            int notFreeX=10;
-            int notFreeY=10;
+        //Проход по строкам
+       for (int i=0; i<4; i++) {
+           // Бесконченый цикл. Выход если элементам некуда сдвигаться.
+            for (; ; ) {
+                int freeY = 10;
+                int notFreeY = 10;
+                int flug = 1;
 
-
-
-                for (int j=0; j<4; j++) {
-                    String value = String.valueOf(butns[0][j].getText().toString());
+                //Поиск  первой свободной ячейки
+                for (int j = 0; j < 4; j++) {
+                    String value = String.valueOf(butns[i][j].getText().toString());
                     if (value.equals("")) {
-                        freeY=j;
-                      //  Toast toast = Toast.makeText(getApplicationContext(), "!!!!!!", Toast.LENGTH_SHORT);
-                       // toast.show();
+                        freeY = j;
+                        break;
+                    }
+                }
 
+                //Поиск первой занятой ячкйки
+                for (int j = freeY; j < 4; j++) {
+                    String value = String.valueOf(butns[i][j].getText().toString());
+                    if (!value.equals("")) {
+                        notFreeY = j;
+                        flug = 0; // обнаруженя занятая ячейка
                         break;
                     }
 
                 }
 
+                if (flug == 1) {    // Нет занятый ячеек. Выход из бесконечного цикла
+                    notFreeY = freeY;
+                    break;
+                }
+                // Если ячейки не совпдают и находяься на разных позициях. Перемещаем позицию.
+                if (freeY != notFreeY) {
+                    butns[i][freeY].setText(butns[i][notFreeY].getText());
+                    changeColor(butns[i][freeY]);
+                    butns[i][notFreeY].setText("");
+                    changeColor(butns[i][notFreeY]);
+                }
 
-
-        for (int j=0; j<4; j++) {
-            String value = String.valueOf(butns[0][j].getText().toString());
-            if (!value.equals("")) {
-                notFreeY=j;
-                break;
             }
-
-        }
-
-        if (freeY==notFreeY) {
-
-        } else {
-
-            butns[0][freeY].setText(butns[0][notFreeY].getText());
-            changeColor(butns[0][freeY]);
-
-            butns[0][notFreeY].setText("");
-            changeColor(butns[0][notFreeY]);
-        }
-
-
-
-
-
-
-
-
-
+      }
     }
-
     public void rightpush(View view) {
         newElement();
     }
@@ -289,7 +270,6 @@ public class MyActivity extends Activity {
                 element.setY(j);
                 freePosition.add(element);
 
-
                 Button reset = (Button) findViewById(R.id.resetbtn);
                 Button leftbtn = (Button) findViewById(R.id.lbtn);
                 Button rightbtn = (Button) findViewById(R.id.rbtn);
@@ -297,7 +277,6 @@ public class MyActivity extends Activity {
                 Button downbtn = (Button) findViewById(R.id.downbtn);
 
                 // Определяем кликабельность кнопок
-
                 reset.setEnabled(false);
                 reset.setText("");
                 changeColor(reset);
@@ -305,11 +284,9 @@ public class MyActivity extends Activity {
                 rightbtn.setEnabled(true);
                 upbtn.setEnabled(true);
                 downbtn.setEnabled(true);
-
             }
 
         }
-
 
     }
 
