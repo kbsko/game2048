@@ -75,11 +75,9 @@ public class MyActivity extends Activity {
             //  Определяем значение и цвет нового элемента
             int valueElement = rand.nextInt(10);
             if (valueElement < 9) {
-                butns[randX][randY].setText("2");
-                changeColor(butns[randX][randY]);
+                installButtonWithText(butns[randX][randY], "2");
             } else {
-                butns[randX][randY].setText("4");
-                changeColor(butns[randX][randY]);
+                installButtonWithText(butns[randX][randY], "4");
             }
         }
         // Нет места конец игры
@@ -87,7 +85,7 @@ public class MyActivity extends Activity {
             gameOver();
         }
     }
-
+        // конец игры
     public void gameOver() {
         // Пишем надпись
         butns[1][0].setText("G");
@@ -113,8 +111,7 @@ public class MyActivity extends Activity {
         Button downbtn = (Button) findViewById(R.id.downbtn);
         // Фиксируем кликабельность кнопок
         reset.setEnabled(true);
-        reset.setText("RES");
-        changeColor(reset);
+        installButtonWithText(reset, "RES");
         leftbtn.setEnabled(false);
         rightbtn.setEnabled(false);
         upbtn.setEnabled(false);
@@ -135,8 +132,7 @@ public class MyActivity extends Activity {
             freePosition.remove(randposition);
             //  Определяем цвет нового элемента фиксируем значение
             String valueStrng = Integer.toString(value);
-            butns[randX][randY].setText(valueStrng);
-            changeColor(butns[randX][randY]);
+            installButtonWithText(butns[randX][randY], valueStrng);
         }
         // Если нет места заканчиваем игру.
         if (freePosition.isEmpty()) {
@@ -152,7 +148,7 @@ public class MyActivity extends Activity {
 
         newElement();
     }
-
+    // кнопка влево
     public void leftpush(View view) {
         TextView scorevalue = (TextView) findViewById(R.id.scorevalue);
         int scoreV = Integer.parseInt(scorevalue.getText().toString());
@@ -196,23 +192,16 @@ public class MyActivity extends Activity {
                 //Подсчет очков
                 scoreV = scoreV + valueElement + valueElement2;
                 scorevalue.setText(Integer.toString(scoreV));
-                int y=0;
-                butns[i][y].setText(str);
-                changeColor(butns[i][0]);
-                butns[i][y+1].setText(str2);
-                changeColor(butns[i][y + 1]);
+                installButtonWithText(butns[i][0], str);
+                installButtonWithText(butns[i][1], str2);
                 // Удаляем созданный элемент из массива свободных позиций
-                deleteFreePisitionElement(i, y);
-                deleteFreePisitionElement(i, y + 1);
-                butns[i][y+2].setText("");
-                changeColor(butns[i][y + 2]);
-                butns[i][y+3].setText("");
-                changeColor(butns[i][y+3]);
+                deleteFreePisitionElement(i, 0);
+                deleteFreePisitionElement(i, 1);
+                installButtonNotText(butns[i][2]);
+                installButtonNotText(butns[i][3]);
                 // Добавляем  в массив свободных позиций ранее занятое место
-                y=2;
-                addFreePositionElements(i, y);
-                y=3;
-                addFreePositionElements(i, y);
+                addFreePositionElements(i, 2);
+                addFreePositionElements(i, 3);
             } else {
                 if ((valuebut1.equals(valuebut2)) && (flugfree1 == 0) && (flugfree2 == 0)) {
                     int valueElement = Integer.parseInt(valuebut1);
@@ -221,16 +210,12 @@ public class MyActivity extends Activity {
                     //Подсчет очков
                     scoreV = scoreV + valueElement;
                     scorevalue.setText(Integer.toString(scoreV));
-                    int y=0;
-                    butns[i][y].setText(str);
-                    changeColor(butns[i][y]);
+                    installButtonWithText(butns[i][0], str);
                     // Удаляем созданный элемент из массива свободных позиций
-                    deleteFreePisitionElement(i, y);
-                    butns[i][y+1].setText("");
-                    changeColor(butns[i][y+1]);
+                    deleteFreePisitionElement(i, 0);
+                    installButtonNotText(butns[i][1]);
                     // Добавляем  в массив свободных позиций ранее занятое место
-                    y=1;
-                    addFreePositionElements(i, y);
+                    addFreePositionElements(i, 1);
                     leftMove(i);
                 } else if ((valuebut2.equals(valuebut3)) && (flugfree2 == 0) && (flugfree3 == 0)) {
                     int valueElement = Integer.parseInt(valuebut3);
@@ -239,16 +224,12 @@ public class MyActivity extends Activity {
                     //Подсчет очков
                     scoreV = scoreV + valueElement;
                     scorevalue.setText(Integer.toString(scoreV));
-                    int y=1;
-                    butns[i][y].setText(str);
-                    changeColor(butns[i][1]);
+                    installButtonWithText(butns[i][1], str);
                     // Удаляем созданный элемент из массива свободных позиций
-                    deleteFreePisitionElement(i, y);
-                    butns[i][y+1].setText("");
-                    changeColor(butns[i][y+1]);
+                    deleteFreePisitionElement(i, 1);
+                    installButtonNotText(butns[i][2]);
                     // Добавляем  в массив свободных позиций ранее занятое место
-                    y=2;
-                    addFreePositionElements(i, y);
+                    addFreePositionElements(i, 2);
                     leftMove(i);
                 } else if ((valuebut3.equals(valuebut4)) && (flugfree3 == 0) && (flugfree4 == 0)) {
                     int valueElement = Integer.parseInt(valuebut3);
@@ -257,30 +238,35 @@ public class MyActivity extends Activity {
                     //Подсчет очков
                     scoreV = scoreV + valueElement;
                     scorevalue.setText(Integer.toString(scoreV));
-                    int y=2;
-                    butns[i][y].setText(str);
-                    changeColor(butns[i][y]);
+                    installButtonWithText(butns[i][2], str);
                     // Удаляем созданный элемент из массива свободных позиций
-                    deleteFreePisitionElement(i, y);
-                    butns[i][y+1].setText("");
-                    changeColor(butns[i][y+1]);
+                    deleteFreePisitionElement(i, 2);
+                    installButtonNotText(butns[i][3]);
                     // Добавляем  в массив свободных позиций ранее занятое место
-                    y=3;
-                    addFreePositionElements(i, y);
+                    addFreePositionElements(i, 3);
                     leftMove(i);
                 }
             }
         }
         newElement();
     }
-
+    // Установка элемента с цветом и заднным текстом
+    public void installButtonWithText(Button button, String str) {
+        button.setText(str);
+        changeColor(button);
+    }
+    // Установка пустой кнопки
+    public void installButtonNotText(Button button) {
+        installButtonWithText(button, "");
+    }
+    // Добавление элемента в массив свободных позиций
     public void addFreePositionElements(int i, int y) {
         Element element = new Element();
         element.setX(i);
         element.setY(y);
         freePosition.add(element);
     }
-
+    // Удаления элемента из массива свободных позиций
     public void deleteFreePisitionElement(int i, int y) {
         Element element2 = new Element();
         for (int k = 0; k < freePosition.size(); k++) {
@@ -300,8 +286,7 @@ public class MyActivity extends Activity {
         // Заполняем массив freeposition новыми свободными значениями
         for (int i = 0; i < 4; i++) {
             for (int j = 0; j < 4; j++) {
-                butns[i][j].setText("");
-                changeColor(butns[i][j]);
+                installButtonNotText(butns[i][j]);
                 addFreePositionElements(i, j);
                 Button reset = (Button) findViewById(R.id.resetbtn);
                 Button leftbtn = (Button) findViewById(R.id.lbtn);
@@ -317,7 +302,7 @@ public class MyActivity extends Activity {
             }
         }
     }
-
+    // Сдвиг элементов влево
     public void leftMove(int i) {
         for (; ; ) {
             int freeY = 10;
@@ -339,7 +324,6 @@ public class MyActivity extends Activity {
                     flugElementsFree = 0; // обнаруженя занятая ячейка
                     break;
                 }
-
             }
             if (flugElementsFree == 1) {    // Нет занятый ячеек. Выход из бесконечного цикла
                 notFreeY = freeY;
@@ -351,8 +335,7 @@ public class MyActivity extends Activity {
                 changeColor(butns[i][freeY]);
                 // Удаляем созданный элемент из массива свободных позиций
                 deleteFreePisitionElement(i, freeY);
-                butns[i][notFreeY].setText("");
-                changeColor(butns[i][notFreeY]);
+                installButtonNotText(butns[i][notFreeY]);
                 // Добавляем  в массив свободных позиций ранее занятое место
                 addFreePositionElements(i, notFreeY);
             }
