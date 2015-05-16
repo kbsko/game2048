@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -89,8 +90,8 @@ public class MyActivity extends Activity {
             freePosition.remove(randposition);
 
             //  Определяем значение и цвет нового элемента
-            int valueElement = rand.nextInt(2);
-            if (valueElement == 0) {
+            int valueElement = rand.nextInt(10);
+            if (valueElement<9) {
                 butns[randX][randY].setText("2");
                 changeColor(butns[randX][randY]);
             } else {
@@ -210,67 +211,218 @@ public class MyActivity extends Activity {
     }
 
     public void leftpush(View view) {
+
+        TextView scorevalue= (TextView) findViewById(R.id.scorevalue);
+
+        int scoreV = Integer.parseInt(scorevalue.getText().toString());
+
+
         //Проход по строкам
+
        for (int i=0; i<4; i++) {
            // Бесконченый цикл. Выход если элементам некуда сдвигаться.
-            for (; ; ) {
-                int freeY = 10;
-                int notFreeY = 10;
-                int flug = 1;
+           leftMove(i);
 
-                //Поиск  первой свободной ячейки
-                for (int j = 0; j < 4; j++) {
-                    String value = String.valueOf(butns[i][j].getText().toString());
-                    if (value.equals("")) {
-                        freeY = j;
-                        break;
-                    }
-                }
+            int flugfree1=0;
+            int flugfree2=0;
+            int flugfree3=0;
+            int flugfree4=0;
+            int flugfreeall=0;
 
-                //Поиск первой занятой ячкйки
-                for (int j = freeY; j < 4; j++) {
-                    String value = String.valueOf(butns[i][j].getText().toString());
-                    if (!value.equals("")) {
-                        notFreeY = j;
-                        flug = 0; // обнаруженя занятая ячейка
-                        break;
-                    }
+           String valuebut1 = String.valueOf(butns[i][0].getText().toString());
+           if (valuebut1.equals(""))
+           {
+               flugfree1=1;
+               flugfreeall++;
+           }
+           String valuebut2 = String.valueOf(butns[i][1].getText().toString());
+           if (valuebut2.equals(""))
+           {
+               flugfree2=1;
+               flugfreeall++;
+           }
+           String valuebut3 = String.valueOf(butns[i][2].getText().toString());
+           if (valuebut3.equals(""))
+           {
+               flugfree3=1;
+               flugfreeall++;
+           }
+           String valuebut4 = String.valueOf(butns[i][3].getText().toString());
+           if (valuebut4.equals(""))
+           {
+               flugfree4=1;
+               flugfreeall++;
+           }
 
-                }
 
-                if (flug == 1) {    // Нет занятый ячеек. Выход из бесконечного цикла
-                    notFreeY = freeY;
-                    break;
-                }
-                // Если ячейки не совпдают и находяься на разных позициях. Перемещаем позицию.
-                if (freeY != notFreeY) {
-                    butns[i][freeY].setText(butns[i][notFreeY].getText());
-                    changeColor(butns[i][freeY]);
+           if ((valuebut1.equals(valuebut2)) &&  (valuebut3.equals(valuebut4)) && flugfreeall==0 )
+           {
+               int valueElement = Integer.parseInt(valuebut1);
+               valueElement=valueElement*2;
+               String str = Integer.toString(valueElement);
+
+               int valueElement2 = Integer.parseInt(valuebut3);
+               valueElement2=valueElement2*2;
+               String str2 = Integer.toString(valueElement2);
+
+               //Подсчет очков
+               scoreV=scoreV+valueElement+valueElement2;
+               scorevalue.setText(Integer.toString(scoreV));
+
+               butns[i][0].setText(str);
+               changeColor(butns[i][0]);
+
+               butns[i][1].setText(str2);
+               changeColor(butns[i][1]);
+
+               // Удаляем созданный элемент из массива свободных позиций
+               Element element2=new Element();
+               for (int k=0; k<freePosition.size(); k++) {
+                   element2=freePosition.get(k);
+                   if ((element2.getX()==i) && (element2.getY()==0)) {
+                       freePosition.remove(element2);
+                       break;
+                   }
+               }
+
+
+               for (int k=0; k<freePosition.size(); k++) {
+                   element2=freePosition.get(k);
+                   if ((element2.getX()==i) && (element2.getY()==1)) {
+                       freePosition.remove(element2);
+                       break;
+                   }
+               }
+
+
+               butns[i][2].setText("");
+               changeColor(butns[i][2]);
+
+               butns[i][3].setText("");
+               changeColor(butns[i][3]);
+
+               // Добавляем  в массив свободных позиций ранее занятое место
+               Element element=new Element();
+               element.setX(i);
+               element.setY(2);
+               freePosition.add(element);
+               Element element22=new Element();
+               element22.setX(i);
+               element22.setY(3);
+               freePosition.add(element22);
+
+
+
+           }
+           else {
+
+               if ((valuebut1.equals(valuebut2)) && (flugfree1==0) && (flugfree2==0)) {
+                   int valueElement = Integer.parseInt(valuebut1);
+                   valueElement = valueElement * 2;
+                   String str = Integer.toString(valueElement);
+
+                   //Подсчет очков
+                   scoreV=scoreV+valueElement;
+                   scorevalue.setText(Integer.toString(scoreV));
+
+                   butns[i][0].setText(str);
+                   changeColor(butns[i][0]);
 
                    // Удаляем созданный элемент из массива свободных позиций
-                    Element element2=new Element();
-                    for (int k=0; k<freePosition.size(); k++) {
-                        element2=freePosition.get(k);
-                        if ((element2.getX()==i) && (element2.getY()==freeY)) {
-                            freePosition.remove(element2);
-                            break;
-                        }
-                    }
+                   Element element2 = new Element();
+                   for (int k = 0; k < freePosition.size(); k++) {
+                       element2 = freePosition.get(k);
+                       if ((element2.getX() == i) && (element2.getY() == 0)) {
+                           freePosition.remove(element2);
+                           break;
+                       }
+                   }
 
-                    butns[i][notFreeY].setText("");
-                    changeColor(butns[i][notFreeY]);
+                   butns[i][1].setText("");
+                   changeColor(butns[i][1]);
 
-                    // Добавляем  в массив свободных позиций ранее занятое место
-                    Element element=new Element();
-                    element.setX(i);
-                    element.setY(notFreeY);
-                    freePosition.add(element);
+                   // Добавляем  в массив свободных позиций ранее занятое место
+                   Element element = new Element();
+                   element.setX(i);
+                   element.setY(1);
+                   freePosition.add(element);
+
+                   leftMove(i);
+
+               } else
+
+               if ((valuebut3.equals(valuebut4)) && (flugfree3==0) && (flugfree4==0)) {
+                   int valueElement = Integer.parseInt(valuebut3);
+                   valueElement = valueElement * 2;
+                   String str = Integer.toString(valueElement);
+
+                   //Подсчет очков
+                   scoreV=scoreV+valueElement;
+                   scorevalue.setText(Integer.toString(scoreV));
+
+                   butns[i][2].setText(str);
+                   changeColor(butns[i][2]);
+
+                   // Удаляем созданный элемент из массива свободных позиций
+                   Element element2 = new Element();
+                   for (int k = 0; k < freePosition.size(); k++) {
+                       element2 = freePosition.get(k);
+                       if ((element2.getX() == i) && (element2.getY() == 2)) {
+                           freePosition.remove(element2);
+                           break;
+                       }
+                   }
+
+                   butns[i][3].setText("");
+                   changeColor(butns[i][3]);
+
+                   // Добавляем  в массив свободных позиций ранее занятое место
+                   Element element = new Element();
+                   element.setX(i);
+                   element.setY(3);
+                   freePosition.add(element);
+                   leftMove(i);
+
+               } else
+
+               if ((valuebut2.equals(valuebut3)) && (flugfree2==0) && (flugfree3==0)) {
+                   int valueElement = Integer.parseInt(valuebut3);
+                   valueElement = valueElement * 2;
+                   String str = Integer.toString(valueElement);
+
+                   //Подсчет очков
+                   scoreV=scoreV+valueElement;
+                   scorevalue.setText(Integer.toString(scoreV));
+
+                   butns[i][1].setText(str);
+                   changeColor(butns[i][1]);
+
+                   // Удаляем созданный элемент из массива свободных позиций
+                   Element element2 = new Element();
+                   for (int k = 0; k < freePosition.size(); k++) {
+                       element2 = freePosition.get(k);
+                       if ((element2.getX() == i) && (element2.getY() == 1)) {
+                           freePosition.remove(element2);
+                           break;
+                       }
+                   }
+
+                   butns[i][2].setText("");
+                   changeColor(butns[i][2]);
+
+                   // Добавляем  в массив свободных позиций ранее занятое место
+                   Element element = new Element();
+                   element.setX(i);
+                   element.setY(2);
+                   freePosition.add(element);
+                   leftMove(i);
+
+               }
 
 
-                }
-
-            }
+           }
       }
+
     }
     public void rightpush(View view) {
         newElement();
@@ -296,9 +448,10 @@ public class MyActivity extends Activity {
                 Button downbtn = (Button) findViewById(R.id.downbtn);
 
                 // Определяем кликабельность кнопок
-                reset.setEnabled(false);
-                reset.setText("");
-                changeColor(reset);
+                reset.setBackgroundColor(getResources().getColor(R.color.yellow));
+                //reset.setEnabled(false);
+               // reset.setText("");
+                //changeColor(reset);
                 leftbtn.setEnabled(true);
                 rightbtn.setEnabled(true);
                 upbtn.setEnabled(true);
@@ -307,6 +460,67 @@ public class MyActivity extends Activity {
 
         }
 
+    }
+
+    public void leftMove(int i) {
+        for (; ; ) {
+            int freeY = 10;
+            int notFreeY = 10;
+            int flug = 1;
+
+            //Поиск  первой свободной ячейки
+            for (int j = 0; j < 4; j++) {
+                String value = String.valueOf(butns[i][j].getText().toString());
+                if (value.equals("")) {
+                    freeY = j;
+                    break;
+                }
+            }
+
+            //Поиск первой занятой ячкйки
+            for (int j = freeY; j < 4; j++) {
+                String value = String.valueOf(butns[i][j].getText().toString());
+                if (!value.equals("")) {
+                    notFreeY = j;
+                    flug = 0; // обнаруженя занятая ячейка
+                    break;
+                }
+
+            }
+
+            if (flug == 1) {    // Нет занятый ячеек. Выход из бесконечного цикла
+                notFreeY = freeY;
+                break;
+            }
+            // Если ячейки не совпдают и находяься на разных позициях. Перемещаем позицию.
+            if (freeY != notFreeY) {
+                butns[i][freeY].setText(butns[i][notFreeY].getText());
+                changeColor(butns[i][freeY]);
+
+                // Удаляем созданный элемент из массива свободных позиций
+                Element element2=new Element();
+                for (int k=0; k<freePosition.size(); k++) {
+                    element2=freePosition.get(k);
+                    if ((element2.getX()==i) && (element2.getY()==freeY)) {
+                        freePosition.remove(element2);
+                        break;
+                    }
+                }
+
+                butns[i][notFreeY].setText("");
+                changeColor(butns[i][notFreeY]);
+
+                // Добавляем  в массив свободных позиций ранее занятое место
+                Element element=new Element();
+                element.setX(i);
+                element.setY(notFreeY);
+                freePosition.add(element);
+
+
+
+            }
+
+        }
     }
 
 }

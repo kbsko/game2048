@@ -13,7 +13,7 @@
             android:gravity="center"
             android:orientation="horizontal">
 
-        <TextView
+            <TextView
                 android:id="@+id/score"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -24,7 +24,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="0"
-                    android:id="@+id/textView" android:textSize="25dp" android:textColor="#ffff2800"/>
+                    android:id="@+id/scorevalue" android:textSize="25dp" android:textColor="#ffff2800"/>
 
 
     </LinearLayout>
@@ -302,9 +302,16 @@
         <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:enabled="false"
-                android:id="@+id/resetbtn" android:layout_toLeftOf="@+id/rbtn" android:layout_above="@+id/downbtn"
-                android:layout_alignLeft="@+id/upbtn" android:onClick="resetpush"/>
+                android:enabled="true"
+                android:id="@+id/resetbtn"
+                android:onClick="resetpush" android:text="RES"
+                android:background="#defcd300" android:layout_above="@+id/lbtn" android:layout_alignParentLeft="true"/>
+        <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/button"
+                android:layout_alignTop="@+id/lbtn" android:layout_toRightOf="@+id/lbtn"
+                android:layout_toLeftOf="@+id/rbtn"/>
 
 
 </RelativeLayout>
