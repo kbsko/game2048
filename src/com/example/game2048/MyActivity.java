@@ -351,40 +351,6 @@ public class MyActivity extends Activity {
 
                } else
 
-               if ((valuebut3.equals(valuebut4)) && (flugfree3==0) && (flugfree4==0)) {
-                   int valueElement = Integer.parseInt(valuebut3);
-                   valueElement = valueElement * 2;
-                   String str = Integer.toString(valueElement);
-
-                   //Подсчет очков
-                   scoreV=scoreV+valueElement;
-                   scorevalue.setText(Integer.toString(scoreV));
-
-                   butns[i][2].setText(str);
-                   changeColor(butns[i][2]);
-
-                   // Удаляем созданный элемент из массива свободных позиций
-                   Element element2 = new Element();
-                   for (int k = 0; k < freePosition.size(); k++) {
-                       element2 = freePosition.get(k);
-                       if ((element2.getX() == i) && (element2.getY() == 2)) {
-                           freePosition.remove(element2);
-                           break;
-                       }
-                   }
-
-                   butns[i][3].setText("");
-                   changeColor(butns[i][3]);
-
-                   // Добавляем  в массив свободных позиций ранее занятое место
-                   Element element = new Element();
-                   element.setX(i);
-                   element.setY(3);
-                   freePosition.add(element);
-                   leftMove(i);
-
-               } else
-
                if ((valuebut2.equals(valuebut3)) && (flugfree2==0) && (flugfree3==0)) {
                    int valueElement = Integer.parseInt(valuebut3);
                    valueElement = valueElement * 2;
@@ -417,12 +383,46 @@ public class MyActivity extends Activity {
                    freePosition.add(element);
                    leftMove(i);
 
+               } else
+
+               if ((valuebut3.equals(valuebut4)) && (flugfree3==0) && (flugfree4==0)) {
+                   int valueElement = Integer.parseInt(valuebut3);
+                   valueElement = valueElement * 2;
+                   String str = Integer.toString(valueElement);
+
+                   //Подсчет очков
+                   scoreV=scoreV+valueElement;
+                   scorevalue.setText(Integer.toString(scoreV));
+
+                   butns[i][2].setText(str);
+                   changeColor(butns[i][2]);
+
+                   // Удаляем созданный элемент из массива свободных позиций
+                   Element element2 = new Element();
+                   for (int k = 0; k < freePosition.size(); k++) {
+                       element2 = freePosition.get(k);
+                       if ((element2.getX() == i) && (element2.getY() == 2)) {
+                           freePosition.remove(element2);
+                           break;
+                       }
+                   }
+
+                   butns[i][3].setText("");
+                   changeColor(butns[i][3]);
+
+                   // Добавляем  в массив свободных позиций ранее занятое место
+                   Element element = new Element();
+                   element.setX(i);
+                   element.setY(3);
+                   freePosition.add(element);
+                   leftMove(i);
+
                }
 
 
            }
       }
-
+        newElement();
     }
     public void rightpush(View view) {
         newElement();

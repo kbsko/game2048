@@ -36,19 +36,19 @@ public class Colors {
                 return;
             case "2":
                 b.setBackgroundColor(Colors.V2);
-                b.setTextColor(Colors.lightText);
+                b.setTextColor(Colors.darkText);
                 break;
             case "4":
                 b.setBackgroundColor(Colors.V4);
-                b.setTextColor(Colors.lightText);
+                b.setTextColor(Colors.darkText);
                 break;
             case "8":
                 b.setBackgroundColor(Colors.V8);
-                b.setTextColor(Colors.darkText);
+                b.setTextColor(Colors.lightText);
                 break;
             case "16":
                 b.setBackgroundColor(Colors.V16);
-                b.setTextColor(Colors.darkText);
+                b.setTextColor(Colors.lightText);
                 break;
             case "32":
                 b.setBackgroundColor(Colors.V32);
@@ -60,19 +60,19 @@ public class Colors {
                 break;
             case "128":
                 b.setBackgroundColor(Colors.V128);
-                b.setTextColor(Colors.darkText);
+                b.setTextColor(Colors.lightText);
                 break;
             case "256":
                 b.setBackgroundColor(Colors.V256);
-                b.setTextColor(Colors.darkText);
+                b.setTextColor(Colors.lightText);
                 break;
             case "512":
                 b.setBackgroundColor(Colors.V512);
-                b.setTextColor(Colors.darkText);
+                b.setTextColor(Colors.lightText);
                 break;
             case "1024":
                 b.setBackgroundColor(Colors.V1024);
-                b.setTextColor(Colors.darkText);
+                b.setTextColor(Colors.lightText);
                 break;
             case "2048":
                 b.setBackgroundColor(Colors.V2048);
