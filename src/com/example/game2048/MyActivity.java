@@ -109,11 +109,6 @@ public class MyActivity extends Activity {
                 installButtonWithText(butns[randX][randY], "4");
             }
         }
-        // Нет места конец игры
-        if (freePosition.isEmpty()) {
-            gameOver();
-
-        }
     }
         // конец игры
     public void gameOver() {
@@ -148,7 +143,6 @@ public class MyActivity extends Activity {
         downbtn.setEnabled(false);
     }
 
-
     public void gameWin() {
         // Пишем надпись
         butns[1][0].setText("Y");
@@ -159,15 +153,12 @@ public class MyActivity extends Activity {
         butns[2][1].setText("W");
         butns[2][2].setText("I");
         butns[2][3].setText("N");
-
         butns[1][0].setBackgroundColor(getResources().getColor(R.color.yellow));
         butns[1][1].setBackgroundColor(getResources().getColor(R.color.yellow));
         butns[1][2].setBackgroundColor(getResources().getColor(R.color.yellow));
-
         butns[2][1].setBackgroundColor(getResources().getColor(R.color.yellow));
         butns[2][2].setBackgroundColor(getResources().getColor(R.color.yellow));
         butns[2][3].setBackgroundColor(getResources().getColor(R.color.yellow));
-
         butns[1][0].setBackgroundColor(getResources().getColor(R.color.yellow));
         butns[1][1].setBackgroundColor(getResources().getColor(R.color.yellow));
         butns[1][2].setBackgroundColor(getResources().getColor(R.color.yellow));
@@ -176,11 +167,9 @@ public class MyActivity extends Activity {
         butns[2][1].setBackgroundColor(getResources().getColor(R.color.yellow));
         butns[2][2].setBackgroundColor(getResources().getColor(R.color.yellow));
         butns[2][3].setBackgroundColor(getResources().getColor(R.color.yellow));
-
         butns[1][0].setTextColor(getResources().getColor(R.color.white));
         butns[1][1].setTextColor(getResources().getColor(R.color.white));
         butns[1][2].setTextColor(getResources().getColor(R.color.white));
-
         butns[2][1].setTextColor(getResources().getColor(R.color.white));
         butns[2][2].setTextColor(getResources().getColor(R.color.white));
         butns[2][3].setTextColor(getResources().getColor(R.color.white));
@@ -198,7 +187,6 @@ public class MyActivity extends Activity {
         upbtn.setEnabled(false);
         downbtn.setEnabled(false);
     }
-
     // Перегрузка функции с новым элементом заданым вручную
     public void newElement(int value) {
         Random rand = new Random();
@@ -214,11 +202,6 @@ public class MyActivity extends Activity {
             //  Определяем цвет нового элемента фиксируем значение
             String valueStrng = Integer.toString(value);
             installButtonWithText(butns[randX][randY], valueStrng);
-        }
-        // Если нет места заканчиваем игру.
-        if (freePosition.isEmpty()) {
-            gameOver();
-
         }
     }
 
@@ -237,11 +220,42 @@ public class MyActivity extends Activity {
                     flug=1;
                    break;
                }
-
-
            }
        if (flug==1) break;}
+       if (freePosition.isEmpty()) {
+           boolean flugGameOver=true;
+          //1st block
+           if (butns[0][0].getText().toString().equals(butns[0][1].getText().toString())) flugGameOver=false;
+           if (butns[0][0].getText().toString().equals(butns[1][0].getText().toString())) flugGameOver=false;
+           if (butns[0][1].getText().toString().equals(butns[0][2].getText().toString())) flugGameOver=false;
+           if (butns[0][1].getText().toString().equals(butns[1][1].getText().toString())) flugGameOver=false;
+           if (butns[0][2].getText().toString().equals(butns[0][3].getText().toString())) flugGameOver=false;
+           if (butns[0][2].getText().toString().equals(butns[1][2].getText().toString())) flugGameOver=false;
+           if (butns[0][3].getText().toString().equals(butns[1][3].getText().toString())) flugGameOver=false;
+           //2nd block
+           if (butns[1][0].getText().toString().equals(butns[1][1].getText().toString())) flugGameOver=false;
+           if (butns[1][0].getText().toString().equals(butns[2][0].getText().toString())) flugGameOver=false;
+           if (butns[1][1].getText().toString().equals(butns[1][2].getText().toString())) flugGameOver=false;
+           if (butns[1][1].getText().toString().equals(butns[2][1].getText().toString())) flugGameOver=false;
+           if (butns[1][2].getText().toString().equals(butns[1][3].getText().toString())) flugGameOver=false;
+           if (butns[1][2].getText().toString().equals(butns[2][2].getText().toString())) flugGameOver=false;
+           if (butns[1][3].getText().toString().equals(butns[2][3].getText().toString())) flugGameOver=false;
+           //3nd block
+           if (butns[2][0].getText().toString().equals(butns[2][1].getText().toString())) flugGameOver=false;
+           if (butns[2][0].getText().toString().equals(butns[3][0].getText().toString())) flugGameOver=false;
+           if (butns[2][1].getText().toString().equals(butns[2][2].getText().toString())) flugGameOver=false;
+           if (butns[2][1].getText().toString().equals(butns[3][1].getText().toString())) flugGameOver=false;
+           if (butns[2][2].getText().toString().equals(butns[2][3].getText().toString())) flugGameOver=false;
+           if (butns[2][2].getText().toString().equals(butns[3][2].getText().toString())) flugGameOver=false;
+           if (butns[2][3].getText().toString().equals(butns[3][3].getText().toString())) flugGameOver=false;
+           //4nd block
+           if (butns[3][0].getText().toString().equals(butns[3][1].getText().toString())) flugGameOver=false;
+           if (butns[3][1].getText().toString().equals(butns[3][2].getText().toString())) flugGameOver=false;
+           if (butns[3][2].getText().toString().equals(butns[3][3].getText().toString())) flugGameOver=false;
+           if (flugGameOver) gameOver();
+       }
     }
+
 
     public void uppush(View view) {
         boolean flugfinal=false;
