@@ -8,8 +8,11 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.TextView;
+
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -18,13 +21,13 @@ import static com.example.game2048.Colors.changeColor;
 public class MyActivity extends Activity {
     ArrayList<Element> freePosition = new ArrayList<Element>(); // Массив свободных позиций
     Button[][] butns = new Button[4][4];  // Собственно кнопки
-    boolean flugfinal=false;
+    boolean flugfinal = false;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
-        ActionBar actionBar=getActionBar();   // Поменяем цвет action bar
+        ActionBar actionBar = getActionBar();   // Поменяем цвет action bar
         actionBar.setBackgroundDrawable(getResources().getDrawable(R.drawable.ab_background));
         initStartArray();  // init start array
         fillArrayFreePosition(); //  заполняем массив поззиций
@@ -105,12 +108,18 @@ public class MyActivity extends Activity {
             int valueElement = rand.nextInt(10);
             if (valueElement < 9) {
                 installButtonWithText(butns[randX][randY], "2");
+                Animation animation = AnimationUtils.loadAnimation(this, R.anim.scale);
+                butns[randX][randY].startAnimation(animation);
+
             } else {
                 installButtonWithText(butns[randX][randY], "4");
+                Animation animation = AnimationUtils.loadAnimation(this, R.anim.scale);
+                butns[randX][randY].startAnimation(animation);
             }
         }
     }
-        // конец игры
+
+    // конец игры
     public void gameOver() {
         // Пишем надпись
         butns[1][0].setText("G");
@@ -187,6 +196,7 @@ public class MyActivity extends Activity {
         upbtn.setEnabled(false);
         downbtn.setEnabled(false);
     }
+
     // Перегрузка функции с новым элементом заданым вручную
     public void newElement(int value) {
         Random rand = new Random();
@@ -205,60 +215,61 @@ public class MyActivity extends Activity {
         }
     }
 
-   public void isWin() {
-       int flug=0;
-       freePosition.clear();
-       for (int i=0; i<4; i++) {
-           for (int j=0; j<4; j++) {
-               String strValue;
-               strValue=butns[i][j].getText().toString();
-               if(strValue.equals("")) {
-                   addFreePositionElements(i,j);
-               }
-               if (strValue.equals("2048")) {
-                   gameWin();
-                    flug=1;
-                   break;
-               }
-           }
-       if (flug==1) break;}
-       if (freePosition.isEmpty()) {
-           boolean flugGameOver=true;
-          //1st block
-           if (butns[0][0].getText().toString().equals(butns[0][1].getText().toString())) flugGameOver=false;
-           if (butns[0][0].getText().toString().equals(butns[1][0].getText().toString())) flugGameOver=false;
-           if (butns[0][1].getText().toString().equals(butns[0][2].getText().toString())) flugGameOver=false;
-           if (butns[0][1].getText().toString().equals(butns[1][1].getText().toString())) flugGameOver=false;
-           if (butns[0][2].getText().toString().equals(butns[0][3].getText().toString())) flugGameOver=false;
-           if (butns[0][2].getText().toString().equals(butns[1][2].getText().toString())) flugGameOver=false;
-           if (butns[0][3].getText().toString().equals(butns[1][3].getText().toString())) flugGameOver=false;
-           //2nd block
-           if (butns[1][0].getText().toString().equals(butns[1][1].getText().toString())) flugGameOver=false;
-           if (butns[1][0].getText().toString().equals(butns[2][0].getText().toString())) flugGameOver=false;
-           if (butns[1][1].getText().toString().equals(butns[1][2].getText().toString())) flugGameOver=false;
-           if (butns[1][1].getText().toString().equals(butns[2][1].getText().toString())) flugGameOver=false;
-           if (butns[1][2].getText().toString().equals(butns[1][3].getText().toString())) flugGameOver=false;
-           if (butns[1][2].getText().toString().equals(butns[2][2].getText().toString())) flugGameOver=false;
-           if (butns[1][3].getText().toString().equals(butns[2][3].getText().toString())) flugGameOver=false;
-           //3nd block
-           if (butns[2][0].getText().toString().equals(butns[2][1].getText().toString())) flugGameOver=false;
-           if (butns[2][0].getText().toString().equals(butns[3][0].getText().toString())) flugGameOver=false;
-           if (butns[2][1].getText().toString().equals(butns[2][2].getText().toString())) flugGameOver=false;
-           if (butns[2][1].getText().toString().equals(butns[3][1].getText().toString())) flugGameOver=false;
-           if (butns[2][2].getText().toString().equals(butns[2][3].getText().toString())) flugGameOver=false;
-           if (butns[2][2].getText().toString().equals(butns[3][2].getText().toString())) flugGameOver=false;
-           if (butns[2][3].getText().toString().equals(butns[3][3].getText().toString())) flugGameOver=false;
-           //4nd block
-           if (butns[3][0].getText().toString().equals(butns[3][1].getText().toString())) flugGameOver=false;
-           if (butns[3][1].getText().toString().equals(butns[3][2].getText().toString())) flugGameOver=false;
-           if (butns[3][2].getText().toString().equals(butns[3][3].getText().toString())) flugGameOver=false;
-           if (flugGameOver) gameOver();
-       }
+    public void isWin() {
+        int flug = 0;
+        freePosition.clear();
+        for (int i = 0; i < 4; i++) {
+            for (int j = 0; j < 4; j++) {
+                String strValue;
+                strValue = butns[i][j].getText().toString();
+                if (strValue.equals("")) {
+                    addFreePositionElements(i, j);
+                }
+                if (strValue.equals("2048")) {
+                    gameWin();
+                    flug = 1;
+                    break;
+                }
+            }
+            if (flug == 1) break;
+        }
+        if (freePosition.isEmpty()) {
+            boolean flugGameOver = true;
+            //1st block
+            if (butns[0][0].getText().toString().equals(butns[0][1].getText().toString())) flugGameOver = false;
+            if (butns[0][0].getText().toString().equals(butns[1][0].getText().toString())) flugGameOver = false;
+            if (butns[0][1].getText().toString().equals(butns[0][2].getText().toString())) flugGameOver = false;
+            if (butns[0][1].getText().toString().equals(butns[1][1].getText().toString())) flugGameOver = false;
+            if (butns[0][2].getText().toString().equals(butns[0][3].getText().toString())) flugGameOver = false;
+            if (butns[0][2].getText().toString().equals(butns[1][2].getText().toString())) flugGameOver = false;
+            if (butns[0][3].getText().toString().equals(butns[1][3].getText().toString())) flugGameOver = false;
+            //2nd block
+            if (butns[1][0].getText().toString().equals(butns[1][1].getText().toString())) flugGameOver = false;
+            if (butns[1][0].getText().toString().equals(butns[2][0].getText().toString())) flugGameOver = false;
+            if (butns[1][1].getText().toString().equals(butns[1][2].getText().toString())) flugGameOver = false;
+            if (butns[1][1].getText().toString().equals(butns[2][1].getText().toString())) flugGameOver = false;
+            if (butns[1][2].getText().toString().equals(butns[1][3].getText().toString())) flugGameOver = false;
+            if (butns[1][2].getText().toString().equals(butns[2][2].getText().toString())) flugGameOver = false;
+            if (butns[1][3].getText().toString().equals(butns[2][3].getText().toString())) flugGameOver = false;
+            //3nd block
+            if (butns[2][0].getText().toString().equals(butns[2][1].getText().toString())) flugGameOver = false;
+            if (butns[2][0].getText().toString().equals(butns[3][0].getText().toString())) flugGameOver = false;
+            if (butns[2][1].getText().toString().equals(butns[2][2].getText().toString())) flugGameOver = false;
+            if (butns[2][1].getText().toString().equals(butns[3][1].getText().toString())) flugGameOver = false;
+            if (butns[2][2].getText().toString().equals(butns[2][3].getText().toString())) flugGameOver = false;
+            if (butns[2][2].getText().toString().equals(butns[3][2].getText().toString())) flugGameOver = false;
+            if (butns[2][3].getText().toString().equals(butns[3][3].getText().toString())) flugGameOver = false;
+            //4nd block
+            if (butns[3][0].getText().toString().equals(butns[3][1].getText().toString())) flugGameOver = false;
+            if (butns[3][1].getText().toString().equals(butns[3][2].getText().toString())) flugGameOver = false;
+            if (butns[3][2].getText().toString().equals(butns[3][3].getText().toString())) flugGameOver = false;
+            if (flugGameOver) gameOver();
+        }
     }
 
 
     public void uppush(View view) {
-        boolean flugfinal=false;
+        boolean flugfinal = false;
         TextView scoreValue = (TextView) findViewById(R.id.scorevalue);
         int scoreV = Integer.parseInt(scoreValue.getText().toString());
         //Проход по строкам
@@ -567,15 +578,18 @@ public class MyActivity extends Activity {
         newElement();
         isWin();
     }
+
     // Установка элемента с цветом и заднным текстом
     public void installButtonWithText(Button button, String str) {
         button.setText(str);
         changeColor(button);
     }
+
     // Установка пустой кнопки
     public void installButtonNotText(Button button) {
         installButtonWithText(button, "");
     }
+
     // Добавление элемента в массив свободных позиций
     public void addFreePositionElements(int i, int y) {
         Element element = new Element();
@@ -583,6 +597,7 @@ public class MyActivity extends Activity {
         element.setY(y);
         freePosition.add(element);
     }
+
     // Удаления элемента из массива свободных позиций
     public void deleteFreePisitionElement(int i, int y) {
         Element element2 = new Element();
@@ -680,7 +695,7 @@ public class MyActivity extends Activity {
                 } else if ((valueBut3.equals(valueBut4)) && (flugFree3 == 0) && (flugFree4 == 0)) {
                     int valueElement = Integer.parseInt(valueBut3);
                     valueElement = valueElement * 2;
-                   // valueElement=2048;
+                    // valueElement=2048;
                     String str = Integer.toString(valueElement);
                     //Подсчет очков
                     scoreV = scoreV + valueElement;
@@ -698,6 +713,7 @@ public class MyActivity extends Activity {
         newElement();
         isWin();
     }
+
     // Очистка поля.
     public void resetpush(View view) {
         // Заполняем массив freeposition новыми свободными значениями
@@ -710,10 +726,10 @@ public class MyActivity extends Activity {
                 Button rightbtn = (Button) findViewById(R.id.rbtn);
                 Button upbtn = (Button) findViewById(R.id.upbtn);
                 Button downbtn = (Button) findViewById(R.id.downbtn);
-                TextView score=(TextView) findViewById(R.id.scorevalue);
+                TextView score = (TextView) findViewById(R.id.scorevalue);
                 score.setText("0");
                 // Определяем кликабельность кнопок
-                flugfinal=false;
+                flugfinal = false;
                 reset.setBackgroundColor(getResources().getColor(R.color.yellow));
                 leftbtn.setEnabled(true);
                 rightbtn.setEnabled(true);
@@ -722,6 +738,7 @@ public class MyActivity extends Activity {
             }
         }
     }
+
     // Сдвиг элементов влево
     public void leftMove(int i) {
         for (; ; ) {
@@ -761,21 +778,21 @@ public class MyActivity extends Activity {
             int freeY = 10;
             int notFreeY = 10;
             int flugElementsFree = 1;
-            int position=10;
+            int position = 10;
             //Поиск  первой свободной ячейки
             for (int j = 0; j < 4; j++) {
-                String value = String.valueOf(butns[i][3-j].getText().toString());
+                String value = String.valueOf(butns[i][3 - j].getText().toString());
                 if (value.equals("")) {
-                    freeY = 3-j;
-                    position=j;
+                    freeY = 3 - j;
+                    position = j;
                     break;
                 }
             }
             //Поиск первой занятой ячкйки
             for (int j = position; j < 4; j++) {
-                String value = String.valueOf(butns[i][3-j].getText().toString());
+                String value = String.valueOf(butns[i][3 - j].getText().toString());
                 if (!value.equals("")) {
-                    notFreeY = 3-j;
+                    notFreeY = 3 - j;
                     flugElementsFree = 0; // обнаруженя занятая ячейка
                     break;
                 }
@@ -806,21 +823,21 @@ public class MyActivity extends Activity {
             int freeY = 10;
             int notFreeY = 10;
             int flugElementsFree = 1;
-            int position=10;
+            int position = 10;
             //Поиск  первой свободной ячейки
             for (int j = 0; j < 4; j++) {
-                String value = String.valueOf(butns[3-j][i].getText().toString());
+                String value = String.valueOf(butns[3 - j][i].getText().toString());
                 if (value.equals("")) {
-                    freeY = 3-j;
-                    position=j;
+                    freeY = 3 - j;
+                    position = j;
                     break;
                 }
             }
             //Поиск первой занятой ячкйки
             for (int j = position; j < 4; j++) {
-                String value = String.valueOf(butns[3-j][i].getText().toString());
+                String value = String.valueOf(butns[3 - j][i].getText().toString());
                 if (!value.equals("")) {
-                    notFreeY = 3-j;
+                    notFreeY = 3 - j;
                     flugElementsFree = 0; // обнаруженя занятая ячейка
                     break;
                 }
