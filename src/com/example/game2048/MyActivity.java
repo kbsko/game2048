@@ -10,6 +10,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.view.animation.TranslateAnimation;
 import android.widget.Button;
 import android.widget.TextView;
 
@@ -115,6 +116,7 @@ public class MyActivity extends Activity {
                 installButtonWithText(butns[randX][randY], "4");
                 Animation animation = AnimationUtils.loadAnimation(this, R.anim.scale);
                 butns[randX][randY].startAnimation(animation);
+
             }
         }
     }
@@ -809,8 +811,17 @@ public class MyActivity extends Activity {
     }
 
     public void moveElemHorizontal(int i, int freeY, int notFreeY) {
+
         butns[i][freeY].setText(butns[i][notFreeY].getText());
         changeColor(butns[i][freeY]);
+        float fromX, fromY, toX, toY;
+        fromX = butns[i][notFreeY].getX();
+        fromY = butns[i][notFreeY].getY();
+        toX =butns[i][freeY].getX();
+        toY =butns[i][freeY].getY();
+        final TranslateAnimation animation = new TranslateAnimation(fromX-toX,0,0,0);
+        animation.setDuration(100);
+        butns[i][freeY].startAnimation(animation);
         // ”дал€ем созданный элемент из массива свободных позиций
         deleteFreePisitionElement(i, freeY);
         installButtonNotText(butns[i][notFreeY]);
@@ -848,12 +859,19 @@ public class MyActivity extends Activity {
             }
             // ≈сли €чейки не совпдают и наход€ьс€ на разных позици€х. ѕеремещаем позицию.
             if (freeY != notFreeY) {
-                moveElemVertival(i, freeY, notFreeY);
+                moveElementVertical(i, freeY, notFreeY);
             }
         }
     }
 
-    public void moveElemVertival(int i, int freeY, int notFreeY) {
+    public void moveElementVertical(int i, int freeY, int notFreeY) {
+        float fromY,toY;
+        fromY = butns[notFreeY][i].getY();
+        toY =butns[freeY][i].getY();
+        final TranslateAnimation animation = new TranslateAnimation(0,0,fromY-toY,0);
+        animation.setDuration(100);
+        butns[freeY][i].startAnimation(animation);
+
         butns[freeY][i].setText(butns[notFreeY][i].getText());
         changeColor(butns[freeY][i]);
         // ”дал€ем созданный элемент из массива свободных позиций
@@ -891,7 +909,7 @@ public class MyActivity extends Activity {
             }
             // ≈сли €чейки не совпдают и наход€ьс€ на разных позици€х. ѕеремещаем позицию.
             if (freeY != notFreeY) {
-                moveElemVertival(i, freeY, notFreeY);
+                moveElementVertical(i, freeY, notFreeY);
             }
         }
     }
