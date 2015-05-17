@@ -1,12 +1,15 @@
 package com.example.game2048;
 
+import android.app.ActionBar;
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
-
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -21,14 +24,39 @@ public class MyActivity extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
+        ActionBar actionBar=getActionBar();   // Поменяем цвет action bar
+        actionBar.setBackgroundDrawable(getResources().getDrawable(R.drawable.ab_background));
         initStartArray();  // init start array
         fillArrayFreePosition(); //  заполняем массив поззиций
-        // Пример добавления элементов
-       // newElement();
-       // newElement(16);
-       // newElement(64);
         newElement(1024);
         newElement(1024);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.mainmenu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if (id == R.id.help) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle("About Program,");
+            builder.setIcon(android.R.drawable.ic_dialog_info);
+            final View view = getLayoutInflater().inflate(R.layout.mydialog, null);
+            builder.setView(view);
+            builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int which) {
+
+                }
+            });
+            AlertDialog alert = builder.create();
+            alert.show();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     public void fillArrayFreePosition() {
@@ -194,16 +222,29 @@ public class MyActivity extends Activity {
         }
     }
 
+   public void isWin() {
+       int flug=0;
+       freePosition.clear();
+       for (int i=0; i<4; i++) {
+           for (int j=0; j<4; j++) {
+               String strValue;
+               strValue=butns[i][j].getText().toString();
+               if(strValue.equals("")) {
+                   addFreePositionElements(i,j);
+               }
+               if (strValue.equals("2048")) {
+                   gameWin();
+                    flug=1;
+                   break;
+               }
 
-   boolean isWin(int value) {
-        if (value==2048)
-            return true;
-         else
-            return false;
+
+           }
+       if (flug==1) break;}
     }
 
     public void uppush(View view) {
-
+        boolean flugfinal=false;
         TextView scoreValue = (TextView) findViewById(R.id.scorevalue);
         int scoreV = Integer.parseInt(scoreValue.getText().toString());
         //Проход по строкам
@@ -239,11 +280,9 @@ public class MyActivity extends Activity {
             if ((valueBut1.equals(valueBut2)) && (valueBut3.equals(valueBut4)) && flugFreeAll == 0) {
                 int valueElement = Integer.parseInt(valueBut1);
                 valueElement = valueElement * 2;
-                flugfinal=isWin(valueElement); // Проверка на победу
                 String str = Integer.toString(valueElement);
                 int valueElement2 = Integer.parseInt(valueBut3);
                 valueElement2 = valueElement2 * 2;
-                flugfinal=isWin(valueElement2); //Проверка на победу
                 String str2 = Integer.toString(valueElement2);
                 //Подсчет очков
                 scoreV = scoreV + valueElement + valueElement2;
@@ -262,7 +301,6 @@ public class MyActivity extends Activity {
                 if ((valueBut1.equals(valueBut2)) && (flugFree1 == 0) && (flugFree2 == 0)) {
                     int valueElement = Integer.parseInt(valueBut1);
                     valueElement = valueElement * 2;
-                    flugfinal=isWin(valueElement); // Проверка на победу
                     String str = Integer.toString(valueElement);
                     //Подсчет очков
                     scoreV = scoreV + valueElement;
@@ -277,7 +315,6 @@ public class MyActivity extends Activity {
                 } else if ((valueBut2.equals(valueBut3)) && (flugFree2 == 0) && (flugFree3 == 0)) {
                     int valueElement = Integer.parseInt(valueBut3);
                     valueElement = valueElement * 2;
-                    flugfinal=isWin(valueElement); // Проверка на победу
                     String str = Integer.toString(valueElement);
                     //Подсчет очков
                     scoreV = scoreV + valueElement;
@@ -292,7 +329,6 @@ public class MyActivity extends Activity {
                 } else if ((valueBut3.equals(valueBut4)) && (flugFree3 == 0) && (flugFree4 == 0)) {
                     int valueElement = Integer.parseInt(valueBut3);
                     valueElement = valueElement * 2;
-                    flugfinal=isWin(valueElement); // Проверка на победу
                     String str = Integer.toString(valueElement);
                     //Подсчет очков
                     scoreV = scoreV + valueElement;
@@ -308,7 +344,7 @@ public class MyActivity extends Activity {
             }
         }
         newElement();
-        if (flugfinal) gameWin();
+        isWin();
     }
 
     public void downpush(View view) {
@@ -347,11 +383,9 @@ public class MyActivity extends Activity {
             if ((valueBut1.equals(valueBut2)) && (valueBut3.equals(valueBut4)) && flugFreeAll == 0) {
                 int valueElement = Integer.parseInt(valueBut1);
                 valueElement = valueElement * 2;
-                flugfinal=isWin(valueElement); // Проверка на победу
                 String str = Integer.toString(valueElement);
                 int valueElement2 = Integer.parseInt(valueBut3);
                 valueElement2 = valueElement2 * 2;
-                flugfinal=isWin(valueElement2); // Проверка на победу
                 String str2 = Integer.toString(valueElement2);
                 //Подсчет очков
                 scoreV = scoreV + valueElement + valueElement2;
@@ -370,7 +404,6 @@ public class MyActivity extends Activity {
                 if ((valueBut1.equals(valueBut2)) && (flugFree1 == 0) && (flugFree2 == 0)) {
                     int valueElement = Integer.parseInt(valueBut1);
                     valueElement = valueElement * 2;
-                    flugfinal=isWin(valueElement); // Проверка на победу
                     String str = Integer.toString(valueElement);
                     //Подсчет очков
                     scoreV = scoreV + valueElement;
@@ -385,7 +418,6 @@ public class MyActivity extends Activity {
                 } else if ((valueBut2.equals(valueBut3)) && (flugFree2 == 0) && (flugFree3 == 0)) {
                     int valueElement = Integer.parseInt(valueBut3);
                     valueElement = valueElement * 2;
-                    flugfinal=isWin(valueElement); // Проверка на победу
                     String str = Integer.toString(valueElement);
                     //Подсчет очков
                     scoreV = scoreV + valueElement;
@@ -400,7 +432,6 @@ public class MyActivity extends Activity {
                 } else if ((valueBut3.equals(valueBut4)) && (flugFree3 == 0) && (flugFree4 == 0)) {
                     int valueElement = Integer.parseInt(valueBut3);
                     valueElement = valueElement * 2;
-                    flugfinal=isWin(valueElement); // Проверка на победу
                     String str = Integer.toString(valueElement);
                     //Подсчет очков
                     scoreV = scoreV + valueElement;
@@ -416,7 +447,7 @@ public class MyActivity extends Activity {
             }
         }
         newElement();
-        if (flugfinal) gameWin();
+        isWin();
     }
 
     // кнопка влево
@@ -456,11 +487,9 @@ public class MyActivity extends Activity {
             if ((valueBut1.equals(valueBut2)) && (valueBut3.equals(valuebut4)) && flugFreeAll == 0) {
                 int valueElement = Integer.parseInt(valueBut1);
                 valueElement = valueElement * 2;
-                flugfinal=isWin(valueElement); // Проверка на победу
                 String str = Integer.toString(valueElement);
                 int valueElement2 = Integer.parseInt(valueBut3);
                 valueElement2 = valueElement2 * 2;
-                flugfinal=isWin(valueElement2); // Проверка на победу
                 String str2 = Integer.toString(valueElement2);
                 //Подсчет очков
                 scoreV = scoreV + valueElement + valueElement2;
@@ -479,7 +508,6 @@ public class MyActivity extends Activity {
                 if ((valueBut1.equals(valueBut2)) && (flugFree1 == 0) && (flugFree2 == 0)) {
                     int valueElement = Integer.parseInt(valueBut1);
                     valueElement = valueElement * 2;
-                    flugfinal=isWin(valueElement); // Проверка на победу
                     String str = Integer.toString(valueElement);
                     //Подсчет очков
                     scoreV = scoreV + valueElement;
@@ -494,7 +522,6 @@ public class MyActivity extends Activity {
                 } else if ((valueBut2.equals(valueBut3)) && (flugFree2 == 0) && (flugFree3 == 0)) {
                     int valueElement = Integer.parseInt(valueBut3);
                     valueElement = valueElement * 2;
-                    flugfinal=isWin(valueElement); // Проверка на победу
                     String str = Integer.toString(valueElement);
                     //Подсчет очков
                     scoreV = scoreV + valueElement;
@@ -509,7 +536,6 @@ public class MyActivity extends Activity {
                 } else if ((valueBut3.equals(valuebut4)) && (flugFree3 == 0) && (flugFree4 == 0)) {
                     int valueElement = Integer.parseInt(valueBut3);
                     valueElement = valueElement * 2;
-                    flugfinal=isWin(valueElement); // Проверка на победу
                     String str = Integer.toString(valueElement);
                     //Подсчет очков
                     scoreV = scoreV + valueElement;
@@ -525,7 +551,7 @@ public class MyActivity extends Activity {
             }
         }
         newElement();
-        if (flugfinal) gameWin();
+        isWin();
     }
     // Установка элемента с цветом и заднным текстом
     public void installButtonWithText(Button button, String str) {
@@ -591,11 +617,9 @@ public class MyActivity extends Activity {
             if ((valueBut1.equals(valueBut2)) && (valueBut3.equals(valueBut4)) && flugFreeAll == 0) {
                 int valueElement = Integer.parseInt(valueBut1);
                 valueElement = valueElement * 2;
-                flugfinal=isWin(valueElement); // Проверка на победу
                 String str = Integer.toString(valueElement);
                 int valueElement2 = Integer.parseInt(valueBut3);
                 valueElement2 = valueElement2 * 2;
-                flugfinal=isWin(valueElement2); // Проверка на победу
                 String str2 = Integer.toString(valueElement2);
                 //Подсчет очков
                 scoreV = scoreV + valueElement + valueElement2;
@@ -614,7 +638,6 @@ public class MyActivity extends Activity {
                 if ((valueBut1.equals(valueBut2)) && (flugFree1 == 0) && (flugFree2 == 0)) {
                     int valueElement = Integer.parseInt(valueBut1);
                     valueElement = valueElement * 2;
-                    flugfinal=isWin(valueElement); // Проверка на победу
                     String str = Integer.toString(valueElement);
                     //Подсчет очков
                     scoreV = scoreV + valueElement;
@@ -629,7 +652,6 @@ public class MyActivity extends Activity {
                 } else if ((valueBut2.equals(valueBut3)) && (flugFree2 == 0) && (flugFree3 == 0)) {
                     int valueElement = Integer.parseInt(valueBut3);
                     valueElement = valueElement * 2;
-                    flugfinal=isWin(valueElement);
                     String str = Integer.toString(valueElement);
                     //Подсчет очков
                     scoreV = scoreV + valueElement;
@@ -644,7 +666,7 @@ public class MyActivity extends Activity {
                 } else if ((valueBut3.equals(valueBut4)) && (flugFree3 == 0) && (flugFree4 == 0)) {
                     int valueElement = Integer.parseInt(valueBut3);
                     valueElement = valueElement * 2;
-                    flugfinal=isWin(valueElement); // Проверка на победу
+                   // valueElement=2048;
                     String str = Integer.toString(valueElement);
                     //Подсчет очков
                     scoreV = scoreV + valueElement;
@@ -660,7 +682,7 @@ public class MyActivity extends Activity {
             }
         }
         newElement();
-        if (flugfinal) gameWin();
+        isWin();
     }
     // Очистка поля.
     public void resetpush(View view) {
