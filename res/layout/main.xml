@@ -18,14 +18,24 @@
                 android:id="@+id/score"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
                 android:gravity="center"
-                android:text="YOUR SCORE:" android:textSize="25dp"/>
+                android:text="Your Score:" android:textSize="20dp"/>
             <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="0"
-                    android:id="@+id/scorevalue" android:textSize="25dp" android:textColor="#ffff2800"/>
+                    android:id="@+id/scorevalue" android:textSize="20dp" android:textColor="#ffff2800"/>
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="TopScore"
+                    android:id="@+id/textView2" android:textSize="20dp"
+                    android:layout_marginLeft="30dp"/>
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="0"
+                    android:id="@+id/topscorevalue" android:textSize="20dp" android:textColor="#ffff2800"/>
 
 
     </LinearLayout>
@@ -300,13 +310,6 @@
                 android:id="@+id/downbtn"
                 android:layout_alignParentBottom="true" android:layout_centerHorizontal="true"
                 android:layout_marginBottom="15dp" android:onClick="downpush"/>
-        <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:enabled="true"
-                android:id="@+id/resetbtn"
-                android:onClick="resetpush" android:text="RES"
-                android:background="#defcd300" android:layout_above="@+id/lbtn" android:layout_alignParentLeft="true"/>
         <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

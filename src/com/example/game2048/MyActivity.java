@@ -3,7 +3,9 @@ package com.example.game2048;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -20,6 +22,9 @@ import java.util.Random;
 import static com.example.game2048.Colors.changeColor;
 
 public class MyActivity extends Activity {
+    public static final String APP_PREFERENCES = "mysettings";
+    public static final String APP_TOP_SCORE = "top_score";
+    SharedPreferences mSettings;
     ArrayList<Element> freePosition = new ArrayList<Element>(); // Массив свободных позиций
     Button[][] butns = new Button[4][4];  // Собственно кнопки
     boolean flugfinal = false;
@@ -32,8 +37,16 @@ public class MyActivity extends Activity {
         actionBar.setBackgroundDrawable(getResources().getDrawable(R.drawable.ab_background));
         initStartArray();  // init start array
         fillArrayFreePosition(); //  заполняем массив поззиций
-        newElement(1024);
-        newElement(1024);
+        newElement();
+        newElement();
+        mSettings = getSharedPreferences(APP_PREFERENCES, Context.MODE_PRIVATE);
+        TextView topscore = (TextView) findViewById(R.id.topscorevalue);
+        if (mSettings.contains(APP_TOP_SCORE)) {
+            // выводим данные в TextView
+            topscore.setText(mSettings.getString(APP_TOP_SCORE, ""));
+        }
+
+
     }
 
     @Override
@@ -47,13 +60,58 @@ public class MyActivity extends Activity {
         int id = item.getItemId();
         if (id == R.id.help) {
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setTitle("About Program,");
+            builder.setTitle("About Program");
             builder.setIcon(android.R.drawable.ic_dialog_info);
             final View view = getLayoutInflater().inflate(R.layout.mydialog, null);
             builder.setView(view);
             builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int which) {
 
+                }
+            });
+            AlertDialog alert = builder.create();
+            alert.show();
+            return true;
+        }
+        if (id == R.id.action_revert) {
+
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle("Repeat Game");
+            builder.setIcon(android.R.drawable.ic_dialog_alert);
+
+            builder.setPositiveButton("YES", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int which) {
+                    resetpush();
+                }
+            });
+            builder.setNegativeButton("NO", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.cancel();
+                }
+            });
+            AlertDialog alert = builder.create();
+            alert.show();
+            return true;
+        }
+        if (id == R.id.resetall) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle("Reset game results");
+            builder.setMessage("You want to reset the game results?");
+            builder.setIcon(android.R.drawable.ic_dialog_alert);
+            builder.setPositiveButton("YES", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int which) {
+                    TextView topscore = (TextView) findViewById(R.id.topscorevalue);
+                    topscore.setText("0");
+                    SharedPreferences.Editor editor = mSettings.edit();
+                    editor.putString(APP_TOP_SCORE, topscore.getText().toString());
+                    editor.commit();
+                }
+            });
+            builder.setNegativeButton("NO", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.cancel();
                 }
             });
             AlertDialog alert = builder.create();
@@ -140,18 +198,30 @@ public class MyActivity extends Activity {
         changeColor(butns[2][1]);
         changeColor(butns[2][2]);
         changeColor(butns[2][3]);
-        Button reset = (Button) findViewById(R.id.resetbtn);
         Button leftbtn = (Button) findViewById(R.id.lbtn);
         Button rightbtn = (Button) findViewById(R.id.rbtn);
         Button upbtn = (Button) findViewById(R.id.upbtn);
         Button downbtn = (Button) findViewById(R.id.downbtn);
         // Фиксируем кликабельность кнопок
-        reset.setEnabled(true);
-        installButtonWithText(reset, "RES");
         leftbtn.setEnabled(false);
         rightbtn.setEnabled(false);
         upbtn.setEnabled(false);
         downbtn.setEnabled(false);
+
+        saveSettings();
+    }
+
+    public void saveSettings() {
+        TextView topscore = (TextView) findViewById(R.id.topscorevalue);
+        TextView score = (TextView) findViewById(R.id.scorevalue);
+        int value1 = Integer.parseInt(topscore.getText().toString());
+        int value2 = Integer.parseInt(score.getText().toString());
+        if (value2 > value1) {
+            topscore.setText(score.getText().toString());
+        }
+        SharedPreferences.Editor editor = mSettings.edit();
+        editor.putString(APP_TOP_SCORE, topscore.getText().toString());
+        editor.commit();
     }
 
     public void gameWin() {
@@ -185,18 +255,16 @@ public class MyActivity extends Activity {
         butns[2][2].setTextColor(getResources().getColor(R.color.white));
         butns[2][3].setTextColor(getResources().getColor(R.color.white));
 
-        Button reset = (Button) findViewById(R.id.resetbtn);
         Button leftbtn = (Button) findViewById(R.id.lbtn);
         Button rightbtn = (Button) findViewById(R.id.rbtn);
         Button upbtn = (Button) findViewById(R.id.upbtn);
         Button downbtn = (Button) findViewById(R.id.downbtn);
         // Фиксируем кликабельность кнопок
-        reset.setEnabled(true);
-        installButtonWithText(reset, "RES");
         leftbtn.setEnabled(false);
         rightbtn.setEnabled(false);
         upbtn.setEnabled(false);
         downbtn.setEnabled(false);
+        saveSettings();
     }
 
     // Перегрузка функции с новым элементом заданым вручную
@@ -717,13 +785,12 @@ public class MyActivity extends Activity {
     }
 
     // Очистка поля.
-    public void resetpush(View view) {
+    public void resetpush() {
         // Заполняем массив freeposition новыми свободными значениями
         for (int i = 0; i < 4; i++) {
             for (int j = 0; j < 4; j++) {
                 installButtonNotText(butns[i][j]);
                 addFreePositionElements(i, j);
-                Button reset = (Button) findViewById(R.id.resetbtn);
                 Button leftbtn = (Button) findViewById(R.id.lbtn);
                 Button rightbtn = (Button) findViewById(R.id.rbtn);
                 Button upbtn = (Button) findViewById(R.id.upbtn);
@@ -732,13 +799,15 @@ public class MyActivity extends Activity {
                 score.setText("0");
                 // Определяем кликабельность кнопок
                 flugfinal = false;
-                reset.setBackgroundColor(getResources().getColor(R.color.yellow));
                 leftbtn.setEnabled(true);
                 rightbtn.setEnabled(true);
                 upbtn.setEnabled(true);
                 downbtn.setEnabled(true);
             }
         }
+
+        newElement();
+        newElement();
     }
 
     // Сдвиг элементов влево
@@ -817,9 +886,9 @@ public class MyActivity extends Activity {
         float fromX, fromY, toX, toY;
         fromX = butns[i][notFreeY].getX();
         fromY = butns[i][notFreeY].getY();
-        toX =butns[i][freeY].getX();
-        toY =butns[i][freeY].getY();
-        final TranslateAnimation animation = new TranslateAnimation(fromX-toX,0,0,0);
+        toX = butns[i][freeY].getX();
+        toY = butns[i][freeY].getY();
+        final TranslateAnimation animation = new TranslateAnimation(fromX - toX, 0, 0, 0);
         animation.setDuration(100);
         butns[i][freeY].startAnimation(animation);
         // Удаляем созданный элемент из массива свободных позиций
@@ -865,10 +934,10 @@ public class MyActivity extends Activity {
     }
 
     public void moveElementVertical(int i, int freeY, int notFreeY) {
-        float fromY,toY;
+        float fromY, toY;
         fromY = butns[notFreeY][i].getY();
-        toY =butns[freeY][i].getY();
-        final TranslateAnimation animation = new TranslateAnimation(0,0,fromY-toY,0);
+        toY = butns[freeY][i].getY();
+        final TranslateAnimation animation = new TranslateAnimation(0, 0, fromY - toY, 0);
         animation.setDuration(100);
         butns[freeY][i].startAnimation(animation);
 

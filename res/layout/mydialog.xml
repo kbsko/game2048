@@ -7,8 +7,13 @@
     <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Develop: Markov Aleksey"
+            android:text="Developer: Markov Aleksey"
             android:id="@+id/textView" android:textSize="20dp"/>
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Contact: aleksey-kb@mail.ru"
+            android:id="@+id/textView3" android:textSize="20dp"/>
     <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

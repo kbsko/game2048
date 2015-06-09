@@ -1,10 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/action_revert"
+          android:icon="@android:drawable/ic_menu_revert"
+          android:title="Search"
+          android:showAsAction="ifRoom" />
 
-        <item android:id="@+id/help"
+    <item android:id="@+id/help"
               android:orderInCategory="100"
               android:showAsAction="never"
               android:title="About Me"/>
-
-
+    <item android:id="@+id/resetall"
+          android:orderInCategory="100"
+          android:showAsAction="never"
+          android:title="Reset game results"/>
 </menu>
